@@ -124,13 +124,13 @@ cd /usr/local/report
 | KEY     | VALUE          | 说明            |
 |---------|----------------|---------------|
 | project | com.wsqpg.test | 项目名，建议写APP包名  |
-| userid| 用户id       | APP当前的用户标识     |
-| username| 用户名| APP当前的用户名 |
+| userid| 用户id       | APP当前的用户标识(可以不用)     |
+| username| 用户名| APP当前的用户名(可以不用) |
 | content| stack traceback:[C]: in function 'SetText'     | 错误内容 |
 
 - 返回结果
-成功，返回“info record success!”
-失败，返回原因，如“info record fail!missing project name.”
+成功，返回“bug record success!”
+失败，返回原因，如“info record fail!mbug record fail!missing project name.”
 
 #### 如何周期性产生crashreport报告，以Centos的crond为例
 
