@@ -66,7 +66,7 @@ location = /cgi-bin/inforeport {
 ```
 
 7. 添加nginx配置，可浏览/data/www/report目录，以便查看日志，注意需要新增一个server。
-以使用端口8000为例，通过http://xxx:8000即可浏览/data/www/report目录，reload nginx生效
+以使用端口8000为例，通过http://host:8000即可浏览/data/www/report目录，reload nginx生效
 
 ```
 server {
@@ -95,6 +95,43 @@ cd /usr/local/report
 ```
 至此可以使用inforeport、crashreport请求提交日志。
 
+
+#### 接口使用说明
+
+1.inforeport接口，普通日志接口
+- 接口地址http://host:port/cgi-bin/inforeport
+- 请求方式HTTP post
+- 请求体（x-www-form-urlencoded）
+
+| KEY     | VALUE          | 说明            |
+|---------|----------------|---------------|
+| project | com.wsqpg.test | 项目名，建议写APP包名  |
+| logfile | test.log       | 要追加日志的文件名     |
+| line0   | 111111111      | 这次日志，第1行要写的内容 |
+| line1   | 2222222222     | 这次日志，第2行要写的内容 |
+| ...   | ...     | ... |
+| line[n]   | nnnnnnnnnnn     | 这次日志，第n行要写的内容 |
+
+- 返回结果
+成功，返回“info record success!”
+失败，返回原因，如“info record fail!missing project name.”
+
+2.crashreport接口，APP错误/崩溃日志专用接口
+- 接口地址http://host:port/cgi-bin/crashreport
+- 请求方式HTTP post
+- 请求体（x-www-form-urlencoded）
+
+| KEY     | VALUE          | 说明            |
+|---------|----------------|---------------|
+| project | com.wsqpg.test | 项目名，建议写APP包名  |
+| userid| 用户id       | APP当前的用户标识     |
+| username| 用户名| APP当前的用户名 |
+| content| stack traceback:[C]: in function 'SetText'     | 错误内容 |
+
+- 返回结果
+成功，返回“info record success!”
+失败，返回原因，如“info record fail!missing project name.”
+
 #### 如何周期性产生crashreport报告，以Centos的crond为例
 
 1.添加环境变量
@@ -111,18 +148,17 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/report/sbin
 MAILTO=root
 ```
 
-3.修改/etc/crontab文件尾总添加2个设置
+3.修改/etc/crontab文件尾总添加2个设置，保存文件
 
 ```
   */30  *  *  *  * root run-parts /usr/local/report/hourly > /usr/local/report/log
   59 23  *  *  * root run-parts /usr/local/report/daliy > /usr/local/report/log
 ```
-意思是每小时执行一次/usr/local/report/hourly目录下的脚本，第天执行一次/usr/local/report/daliy目录下的脚本
+意思是每小时执行一次/usr/local/report/hourly目录下的脚本，第天执行一次/usr/local/report/daliy目录下的脚本。
 
+4.重新载入crontab配置生效
 
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+```
+service crond reload
+```
 
