@@ -1,0 +1,107 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Reporter",
+		"_postman_id": "1be96be2-12d0-ed9b-672c-d09dbdd8cf43",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "crashreport",
+			"request": {
+				"url": "{{api}}/cgi-bin/crashreport",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "project",
+							"value": "com.wsqpg.test",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "userid",
+							"value": "188000",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "jianguankun",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "UIAPI:SetText(Transform, String)\nUIAPIWrap:SetText(IntPtr)\nLuaInterface.LuaState:PCall(Int32, Int32)\nLuaInterface.LuaFunction:PCall()\nLuaInterface.LuaFunction:Call(Object[])\nLuaClient:Call(String, Object[])\nSocketManager:FixedUpdate()\n\n....................................\nA null value was found where an object instance was required.\nstack traceback:\n\t[C]: in function 'SetText'\n\t[string \"base/ui\"]:465: in function 'text_child'\n\t[string \"game/ui_onclick\"]:1374: in function 'IsOpenLocationFun'\n\t[string \"game/ui_onclick\"]:1385: in function 'game_getdistance'\n\t[string \"net/msgHandle\"]:444: in function <[string \"net/msgHandle\"]:14>",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "inforeport",
+			"request": {
+				"url": "{{api}}/cgi-bin/inforeport",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "project",
+							"value": "com.wsqpg.test",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "logfile",
+							"value": "out",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "line0",
+							"value": "line0",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "line1",
+							"value": "line1",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "line2",
+							"value": "line2",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
