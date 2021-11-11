@@ -22,6 +22,8 @@ crashreport : crashreport.cpp
 	$(make) crashreport.cpp -o crashreport -lfcgi++ -lfcgi 
 
 install : analyse
+	chmod +x inforeport
+	chmod +x crashreport
 	test -d '/usr/local/report' || mkdir -p '/usr/local/report'
 	test -d '/usr/local/report/sbin/' || mkdir -p '/usr/local/report/sbin/'
 	cp bin/analyse /usr/local/report/sbin/analyse
