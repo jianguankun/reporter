@@ -6,13 +6,13 @@
 
 #### 安装步骤
 
-1.  安装必要的工具
+1.安装必要的工具
 
 ```
 yum install -y gcc gcc-c++ gcc-g77 boost-devel bzip2
 ```
 
-2. 打开项目目录，编译并安装依赖库fast-gci
+2.打开项目目录，编译并安装依赖库fast-gci
 
 ```
 tar -xf fcgi-2.4.1-SNAP-0910052249.tar.gz
@@ -21,7 +21,7 @@ cd fcgi-2.4.1-SNAP-0910052249
 make && make install
 ```
 
-3.  打开项目目录，编译并安装依赖库fastcgipp库
+3.打开项目目录，编译并安装依赖库fastcgipp库
 
 ```
 tar -xf fastcgi++-2.1.tar.bz2
@@ -33,7 +33,7 @@ echo /usr/local/lib/ > /etc/ld.so.conf.d/fastcgipp.conf
 ldconfig
 ```
 
-4.  打开项目目录，编译并安装项目
+4.打开项目目录，编译并安装项目
 
 ```
 make report
@@ -45,9 +45,9 @@ make install
 inforeport监听端口6000
 crashreport监听端口6001
 
-5.  安装nginx,已安装请忽略这步。
+5.安装nginx,已安装请忽略这步。
 
-6.  添加nginx配置，路由inforeport、crashreport请求，reload nginx生效
+6.添加nginx配置，路由inforeport、crashreport请求，reload nginx生效
 
 ```
 location = /cgi-bin/crashreport {
@@ -93,7 +93,31 @@ cd /usr/local/report
 ./inforeport -d
 ./crashreport -d
 ```
+至此可以使用inforeport、crashreport请求提交日志。
 
+#### 如何周期性产生crashreport报告，以Centos的crond为例
+
+1.添加环境变量
+```
+vim ~/.bash_profile
+把/usr/local/report/sbin添加环境变量PATH中去
+source ~/.bash_profile
+```
+2.修改/etc/crontab文件，第2行PATH添加/usr/local/report/sbin，参考下面配置
+
+```
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/report/sbin
+MAILTO=root
+```
+
+3.修改/etc/crontab文件尾总添加2个设置
+
+```
+  */30  *  *  *  * root run-parts /usr/local/report/hourly > /usr/local/report/log
+  59 23  *  *  * root run-parts /usr/local/report/daliy > /usr/local/report/log
+```
+意思是每小时执行一次/usr/local/report/hourly目录下的脚本，第天执行一次/usr/local/report/daliy目录下的脚本
 
 
 #### 使用说明
