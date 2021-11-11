@@ -24,5 +24,8 @@ crashreport : crashreport.cpp
 install : analyse
 	test -d '/usr/local/report' || mkdir -p '/usr/local/report'
 	test -d '/usr/local/report/sbin/' || mkdir -p '/usr/local/report/sbin/'
-	cp bin/analyse /usr/local/report/sbin/analyse
+	cp inforeport /usr/local/report/inforeport
+	cp crashreport /usr/local/report/crashreport
+	cp -r sh/daliy/ /usr/local/report/
+	cp -r sh/hourly/ /usr/local/report/
 	mkdir -p /data/www/report
