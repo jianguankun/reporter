@@ -25,3 +25,4 @@ install : analyse
 	test -d '/usr/local/report' || mkdir -p '/usr/local/report'
 	test -d '/usr/local/report/sbin/' || mkdir -p '/usr/local/report/sbin/'
 	cp bin/analyse /usr/local/report/sbin/analyse
+	mkdir -p /data/www/report
