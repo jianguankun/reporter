@@ -25,7 +25,7 @@ make && make install
 
 ```
 tar -xf fastcgi++-2.1.tar.bz2
-cd fastcgi++-2.1.tar.bz2
+cd fastcgi++-2.1
 ./configure
 make && make install
 touch /etc/ld.so.conf.d/fastcgipp.conf
