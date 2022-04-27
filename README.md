@@ -4,7 +4,7 @@
 日志收集服务
 
 
-#### 安装步骤
+#### 安装方式一，编译安装
 
 1.安装必要的工具
 
@@ -46,6 +46,19 @@ inforeport监听端口6000
 crashreport监听端口6001
 
 5.安装nginx,已安装请忽略这步。
+
+```
+yum install -y pcre pcre-devel zlib zlib-devel libssl-dev
+tar -xf nginx-1.3.8.tar.gz
+cd nginx-1.3.8
+./configure --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_realip_module
+make && make install
+
+#设置环境变量
+vim /root/.bash_profile
+#加入PATH=$PATH:$HOME/bin:/usr/local/nginx/sbin/
+source /root/.bash_profile
+```
 
 6.添加nginx配置，路由inforeport、crashreport请求，reload nginx生效
 
@@ -95,6 +108,56 @@ cd /usr/local/report
 ```
 至此可以使用inforeport、crashreport请求提交日志。
 
+#### 安装方式二，使用docker镜像
+
+1.安装docker，已安装请忽略这步。
+
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+```
+
+2.制作镜像
+
+```
+#注意最后参数“.”，表示当前有Dockerfile的目录
+docker build -t reporter:v1 .
+```
+
+3.通过镜像启动容器
+
+```
+docker run -it -d \
+   -p 80:80 -p 8000:8000 \
+   -v /data/www/report:/data/www/report \
+   -v /data/report-logs:/usr/local/nginx/logs \
+   reporter:v1
+```
+
+#### 安装方式三，使用公共docker镜像
+
+1.安装docker，已安装请忽略这步。
+
+```
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+```
+
+2.获取镜像
+
+```
+docker pull jianguankun/reporter:v1
+```
+
+3.通过镜像启动容器
+
+```
+docker run -it -d \
+   -p 80:80 -p 8000:8000 \
+   -v /data/www/report:/data/www/report \
+   -v /data/report-logs:/usr/local/nginx/logs \
+   jianguankun/reporter:v1
+```
 
 #### 接口使用说明
 
