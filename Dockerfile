@@ -26,8 +26,11 @@ RUN yum install -y gcc gcc-c++ gcc-g77 boost-devel bzip2 make \
     && make && make install \
     #step4
     && cd /reporter/ \
-    && make report && make install \
+    && make install \
+    && chmod +x /usr/local/report/hourly/create-crash-analyse.sh \
+    && chmod +x /usr/local/report/daliy/create-crash-analyse.sh \
     && \cp -f nginx.conf /usr/local/nginx/conf/ \
+    && mkdir -p /var/reporter/logs/ \
     && cp /reporter/sh/start.sh / \
     && chmod +x /start.sh \
     #step5
@@ -36,7 +39,7 @@ RUN yum install -y gcc gcc-c++ gcc-g77 boost-devel bzip2 make \
     && yum clean all \
     && rm -fr /reporter/
 
-VOLUME ["/data/www/report/","/usr/local/nginx/logs/"]
+VOLUME ["/data/www/report/","/usr/local/nginx/logs/","/var/reporter/logs/"]
 
 EXPOSE 80 8080
 

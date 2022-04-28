@@ -1,7 +1,9 @@
 #! /bin/sh
 
-cd /usr/local/report
-./crashreport -d
-./inforeport -d
-cd /usr/local/nginx/sbin
-./nginx -g "daemon off;"
+export PATH=$PATH:/usr/local/report/
+export PATH=$PATH:/usr/local/report/sbin/
+export PATH=$PATH:/usr/local/nginx/sbin/
+crashreport -d
+inforeport -d
+cron -d
+nginx -g "daemon off;"

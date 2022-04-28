@@ -108,6 +108,12 @@ cd /usr/local/report
 ```
 至此可以使用inforeport、crashreport请求提交日志。
 
+9.启动cron，cron用于定期（每天、每半小时）产生crashreport的报告
+```
+cd /usr/local/report/sbin/
+./cron -d
+```
+
 #### 安装方式二，使用docker镜像
 
 1.安装docker，已安装请忽略这步。
@@ -129,8 +135,11 @@ docker build -t reporter:v1 .
 ```
 docker run -it -d \
    -p 80:80 -p 8000:8000 \
-   -v /data/www/report:/data/www/report \
-   -v /data/report-logs:/usr/local/nginx/logs \
+   -v /data/www/reporter-data:/data/www/report \
+   -v /var/reporter/nginx-logs:/usr/local/nginx/logs \
+   -v /var/reporter/analyse-logs:/var/reporter/logs \
+   -e TZ=Asia/Shanghai \
+   --name reporter \
    reporter:v1
 ```
 
@@ -146,7 +155,7 @@ sh get-docker.sh
 2.获取镜像
 
 ```
-docker pull jianguankun/reporter:v1
+docker pull jianguankun/reporter
 ```
 
 3.通过镜像启动容器
@@ -154,9 +163,12 @@ docker pull jianguankun/reporter:v1
 ```
 docker run -it -d \
    -p 80:80 -p 8000:8000 \
-   -v /data/www/report:/data/www/report \
-   -v /data/report-logs:/usr/local/nginx/logs \
-   jianguankun/reporter:v1
+   -v /data/www/reporter-data:/data/www/report \
+   -v /var/reporter/nginx-logs:/usr/local/nginx/logs \
+   -v /var/reporter/analyse-logs:/var/reporter/logs \
+   -e TZ=Asia/Shanghai \
+   --name reporter \
+   jianguankun/reporter
 ```
 
 #### 接口使用说明
@@ -195,7 +207,11 @@ docker run -it -d \
 成功，返回“bug record success!”
 失败，返回原因，如“info record fail!mbug record fail!missing project name.”
 
-#### 如何周期性产生crashreport报告，以Centos的crond为例
+#### 如何自定义周期性产生crashreport报告
+
+本项目提供的sbin/cron程序，是规定每半小时产生报告，每天零时产生日报
+如果希望灵活定义，可不使用cron程序，改用系统的计划工具，以Centos的crond为例
+注意容器的生产环境下不建议使用系统的计划工具，容器已默认启动项目本身的sbin/cron程序
 
 1.添加环境变量
 ```
@@ -219,7 +235,7 @@ MAILTO=root
 ```
 意思是每小时执行一次/usr/local/report/hourly目录下的脚本，第天执行一次/usr/local/report/daliy目录下的脚本。
 
-4.重新载入crontab配置生效
+4.重新载入crontab配置生效，注意要先停止项目提供的sbin/cron程序。
 
 ```
 service crond reload
