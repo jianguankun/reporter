@@ -121,6 +121,7 @@ cd /usr/local/report/sbin/
 ```
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
+systemctl restartdocker.service
 ```
 
 2.制作镜像
@@ -150,6 +151,7 @@ docker run -it -d \
 ```
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
+systemctl restartdocker.service
 ```
 
 2.获取镜像
